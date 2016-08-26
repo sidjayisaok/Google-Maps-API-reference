@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      /*only change this for the map size*/
+      #map {
+        height: 50%;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- search box will have to be replaced -->
+    <div>
+       find a location <input type="text" id="address-input">
+       <button onclick="searchAddress();">search</button>
+    </div>
+    <div id="map"></div>
+
+    <script>
+
+      var map;
+      //this initializes our search geocaching
+      function searchAddress(){
+        var addressInput = document.getElementById('address-input').value;
+
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({
+          address: addressInput
+        }, function(results, status){
+            if (status === google.maps.GeocoderStatus.OK){
+              var myResults = results[0].geometry.location;
+
+              createMarker(myResults);
+
+              map.setCenter(myResults);
+
+              map.setZoom(6);
+            }
+        });
+      }
+
+      //this creates our marker
+      function createMarker(latlong){
+        var marker;
+        //don't change this url or so help me God...
+        var ourIcon = new google.maps.MarkerImage("https://i.imgur.com/Jwr8Jvm.png");
+
+        if(marker != undefined && marker != ''){
+          marker.setMap(null);
+          marker ='';
+        }
+
+        marker = new google.maps.Marker({
+          map: map,
+          position: latlong,
+          icon: ourIcon
+        });
+      }
+
+      //this launches google maps
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 6,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+      }
+
+      searchAddress();
+
+    </script>
+    <!-- Google Map api seems not to require an AJAX call -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2-rrjH5Q32GgAnvSj6CEon3d9qF-_U-o&callback=initMap"
+    async defer></script>
+  </body>
+</html>
