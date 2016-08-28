@@ -29,6 +29,8 @@
     <script>
 
       var map;
+      // var bounds = new google.maps.LatLngBounds();
+
       //this initializes our search geocaching
       function searchAddress(){
         var addressInput = document.getElementById('address-input').value;
@@ -44,8 +46,8 @@
               createMarker(myResults);
 
               map.setCenter(myResults);
-
-              map.setZoom(6);
+              //final result zoom level
+              map.setZoom(12);
             }
         });
       }
@@ -54,24 +56,37 @@
       function createMarker(latlong){
         var marker;
         //don't change this url or so help me God...
-        var ourIcon = new google.maps.MarkerImage("https://i.imgur.com/Jwr8Jvm.png");
+        var ourIcon = new google.maps.MarkerImage("https://i.imgur.com/beAXMxQ.png");
 
         if(marker != undefined && marker != ''){
           marker.setMap(null);
           marker ='';
         }
 
-        marker = new google.maps.Marker({
-          map: map,
-          position: latlong,
-          icon: ourIcon
+        //information for info window
+        var contentString = '<div>This is test info<div>';
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: contentString
         });
-      }
+        //marker information
+        marker = new google.maps.Marker({
+            map: map,
+            position: latlong,
+            animation: google.maps.Animation.DROP,
+            icon: ourIcon
+          });
+        //listener for info window
+        marker.addListener('click', function(){
+          infoWindow.open(map, marker);
+        });
+    }
 
       //this launches google maps
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
+          //this is set to NYC
+          center: {lat: 40.7128, lng: -74.0059},
           zoom: 6,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
