@@ -21,15 +21,23 @@
   <body>
     <!-- search box will have to be replaced -->
     <div>
-       find a location <input type="text" id="address-input">
+       <p>find a location</p>
+       <input type="text" id="address-input">
        <button onclick="searchAddress();">search</button>
+    </div>
+    <!-- this adds a clear, show, and delete markers buttons -->
+    <div id="floating-panel">
+      <!-- buttons for clear and show markers -->
+      <input onclick="clearMarkers();" type=button value="Hide Markers">
+      <input onclick="showMarkers();" type=button value="Show All Markers">
+      <!-- <input onclick="deleteMarkers();" type=button value="Delete Markers"> -->
     </div>
     <div id="map"></div>
 
     <script>
 
       var map;
-      // var bounds = new google.maps.LatLngBounds();
+      var markers = [];
 
       //this initializes our search geocaching
       function searchAddress(){
@@ -80,7 +88,17 @@
         marker.addListener('click', function(){
           infoWindow.open(map, marker);
         });
+        //this should push marker to the empty array
+        markers.push(marker);
     }
+
+    // Sets the map on all markers in the array.
+     function setMapOnAll(map) {
+       for (var i = 0; i < markers.length; i++) {
+         markers[i].setMap(map);
+       }
+     }
+
 
       //this launches google maps
       function initMap() {
@@ -91,6 +109,22 @@
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
       }
+
+      //Removes the markers from the map, but keeps them in the array.
+     function clearMarkers() {
+       setMapOnAll(null);
+     }
+
+     //Shows any markers currently in the array.
+     function showMarkers() {
+       setMapOnAll(map);
+     }
+
+     //Deletes all markers in the array by removing references to them.
+    //  function deleteMarkers() {
+    //    clearMarkers();
+    //    markers = [];
+    //  }
 
       searchAddress();
 
