@@ -59,6 +59,7 @@ function createMarker(place) {
   function searchFunc(){
     var geocoder = new google.maps.Geocoder();
     var address;
+    //Andrew added the lines below to tie this with the database
     var models = require('../models');
     models.Game.findOne(where: {userId: }).then(function(game){
       address = game.address + " " + game.city + " " + game.state + " " + game.zipcode;  
@@ -73,7 +74,7 @@ function createMarker(place) {
       var searchResults = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
       map = new google.maps.Map(document.getElementById('map'), {
         center: searchResults,
-        zoom: 15
+        zoom: 12
       });
       //sets up info window
       infowindow = new google.maps.InfoWindow();
@@ -82,6 +83,7 @@ function createMarker(place) {
         location: searchResults,
         radius: 1000,
         // change the types using https://developers.google.com/places/supported_types as a reference
+        //you might need to remove type to get it syncing with the database
         type: ['store']
       }, callback);
       }
