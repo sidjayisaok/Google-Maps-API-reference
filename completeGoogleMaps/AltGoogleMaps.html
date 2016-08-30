@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Another Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+
+    <div>
+       <p>find a location</p>
+       <input type="text" id="address-input">
+       <button onclick="searchFunc();">search</button>
+    </div>
+
+    <style>
+      html, body {
+        height: 100%;
+        width:100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 50%;
+        width: 50%;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2-rrjH5Q32GgAnvSj6CEon3d9qF-_U-o&callback=initMap&libraries=places"
+    async defer></script>
+    <script src ="GoogleMapsAPIcomplete.js">
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>
