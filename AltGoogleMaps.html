@@ -37,17 +37,17 @@
 
       //start map protocol
       function initMap() {
-        var newYork = {lat: 40.7128, lng: -74.0059};
+        var searchResults = {lat: 40.7128, lng: -74.0059};
 
         map = new google.maps.Map(document.getElementById('map'), {
-          center: newYork,
+          center: searchResults,
           zoom: 15
         });
         //sets up info window
         infowindow = new google.maps.InfoWindow();
         var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
-          location: newYork,
+          location: searchResults,
           radius: 10000,
           // change the types using https://developers.google.com/places/supported_types as a reference
           type: ['store']
@@ -80,13 +80,30 @@
         function searchFunc(){
           var geocoder = new google.maps.Geocoder();
           var address = document.getElementById('address-input').value;
+          var longitude;
+          var latitude;
 
-          geocoder.geocode( { 'address': address}, function(results, status) {
+          geocoder.geocode({ 'address': address}, function(results, status) {
 
           if (status === google.maps.GeocoderStatus.OK) {
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            alert(latitude + " " + longitude);
+            latitude = results[0].geometry.location.lat();
+            longitude = results[0].geometry.location.lng();
+            //attempting search fix
+            var searchResults = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
+
+            map = new google.maps.Map(document.getElementById('map'), {
+              center: searchResults,
+              zoom: 15
+            });
+            //sets up info window
+            infowindow = new google.maps.InfoWindow();
+            var service = new google.maps.places.PlacesService(map);
+            service.nearbySearch({
+              location: searchResults,
+              radius: 10000,
+              // change the types using https://developers.google.com/places/supported_types as a reference
+              type: ['store']
+            }, callback);
             }
           });
         }
