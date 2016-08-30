@@ -58,7 +58,11 @@ function createMarker(place) {
   //figure out how to change the latitude and longitude into search factors
   function searchFunc(){
     var geocoder = new google.maps.Geocoder();
-    var address = document.getElementById('address-input').value;
+    var address;
+    var models = require('../models');
+    models.Game.findOne(where: {userId: }).then(function(game){
+      address = game.address + " " + game.city + " " + game.state + " " + game.zipcode;  
+    });
     var longitude;
     var latitude;
     geocoder.geocode({ 'address': address}, function(results, status) {
